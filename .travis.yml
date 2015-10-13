@@ -1,14 +1,26 @@
 language: python
-python: 2.7
+python:
+  - 2.7
+
+# Used old infrastructure, needed for integration tests:
+# http://docs.travis-ci.com/user/workers/standard-infrastructure/
 sudo: required
+
 os:
   - linux
+
 env:
-  - TOX_ENV=lint
-  - TOX_ENV=py27
+  - TASK=checks
+  - TASK=integration
+
+cache:
+  directories:
+    - $HOME/.cache/pip/
 
 install:
-  - sudo pip install tox
+  - pip install tox
+  - pip install --upgrade pip
+  - if [ ${TASK} = 'integration' ]; then sudo -E ./scripts/travis/prepare-integration.sh; fi
 
 script:
-  - sudo tox -e $TOX_ENV  # Got to run tests as root so they can access /etc/shadow file.
+  - ./scripts/travis/build.sh
