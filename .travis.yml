@@ -11,4 +11,4 @@ install:
   - pip install tox
 
 script:
-  - tox -e $TOX_ENV
+  - sudo tox -e $TOX_ENV  # Got to run tests as root so they can access /etc/shadow file.

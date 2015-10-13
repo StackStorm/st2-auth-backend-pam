@@ -7,11 +7,13 @@ if [ "$(whoami)" != 'root' ]; then
 fi
 
 TESTUSER='pammer'
-TESTPASSWD='spammer'
+TESTPASSWD='spammer'  # If you are changing this, fix the tests as well.
 
 create_user() {
   if [ $(id -u ${TESTUSER} &> /devnull; echo $?) != 0 ]
   then
+    echo "########################################################################################"
+    echo "############################# Creating test user #######################################"
     echo "########################################################################################"
     SALT='mkpasswd'
     useradd ${TESTUSER} -p `mkpasswd --method=sha-512 $TESTPASSWD ${SALT}`
