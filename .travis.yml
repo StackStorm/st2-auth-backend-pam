@@ -18,8 +18,8 @@ cache:
     - $HOME/.cache/pip/
 
 install:
-  - pip install tox
-  - pip install --upgrade pip
+  - sudo -H pip install tox
+  - sudo -H pip install --upgrade pip
   - if [ ${TASK} = 'integration' ]; then sudo -E ./scripts/travis/prepare-integration.sh; fi
 
 script:
