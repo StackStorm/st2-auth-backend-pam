@@ -8,7 +8,7 @@ env:
   - TOX_ENV=py27
 
 install:
-  - pip install tox
+  - sudo pip install tox
 
 script:
   - sudo tox -e $TOX_ENV  # Got to run tests as root so they can access /etc/shadow file.
