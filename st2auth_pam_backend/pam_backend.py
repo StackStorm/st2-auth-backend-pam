@@ -13,12 +13,45 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# pylint: disable=no-member
+from __future__ import absolute_import
+
+import logging
 
 __all__ = [
     'PAMAuthenticationBackend'
 ]
 
+from st2auth_pam_backend.pam_ffi import authenticate as pam_auth
+
+LOG = logging.getLogger(__name__)
+
 
 class PAMAuthenticationBackend(object):
-    pass
+    """
+    PAM module for python
+
+    Provides an authenticate function that will allow the caller to
+    authenticate a user against the Pluggable Authentication Modules
+    (PAM) on the system.
+
+    pam_ffi is implemented using ctypes, so no compilation is necessary.
+    """
+
+    def __init__(self):
+        pass
+
+    def authenticate(self, username, password):
+        try:
+            pam_auth(username, password)
+            LOG.info('Successfully authenticated user "%s".', username)
+        except:
+            LOG.exception('Failed authenticating user "%s".', username)
+
+    def get_user(self, username):
+        pass
+
+
+if __name__ == "__main__":
+    import getpass
+    pam = PAMAuthenticationBackend()
+    print(pam.authenticate(getpass.getuser(), getpass.getpass()))
