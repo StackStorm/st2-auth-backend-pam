@@ -21,7 +21,7 @@ __all__ = [
     'PAMAuthenticationBackend'
 ]
 
-from st2auth_pam_backend.pam_ffi import authenticate as pam_auth
+from st2auth_pam_backend.pam_ffi import auth as pam_auth
 
 LOG = logging.getLogger(__name__)
 
@@ -42,16 +42,14 @@ class PAMAuthenticationBackend(object):
 
     def authenticate(self, username, password):
         try:
-            pam_auth(username, password)
+            return pam_auth(username, password)
             LOG.info('Successfully authenticated user "%s".', username)
         except:
             LOG.exception('Failed authenticating user "%s".', username)
-
-    def get_user(self, username):
-        pass
 
 
 if __name__ == "__main__":
     import getpass
     pam = PAMAuthenticationBackend()
-    print(pam.authenticate(getpass.getuser(), getpass.getpass()))
+    user = raw_input('Username: ')
+    print(pam.authenticate(user, getpass.getpass()))
