@@ -4,6 +4,7 @@
 
 ### Requirements
 
+Ubuntu:
 ```
 sudo apt-get -y install libpam0g
 ```
