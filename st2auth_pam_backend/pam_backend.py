@@ -42,14 +42,11 @@ class PAMAuthenticationBackend(object):
 
     def authenticate(self, username, password):
         try:
-            return pam_auth(username, password)
-            LOG.info('Successfully authenticated user "%s".', username)
+            ret = pam_auth(username, password)
+            if ret:
+                LOG.info('Successfully authenticated user "%s".', username)
+            else:
+                LOG.info('Invalid username/password for user "%s".', username)
         except:
-            LOG.exception('Failed authenticating user "%s".', username)
-
-
-if __name__ == "__main__":
-    import getpass
-    pam = PAMAuthenticationBackend()
-    user = raw_input('Username: ')
-    print(pam.authenticate(user, getpass.getpass()))
+            LOG.exception('Unable to PAM authenticate user "%s".', username)
+            raise
