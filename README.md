@@ -1,6 +1,6 @@
 # PAM authentication plugin for StackStorm Community and Enterprise edition
 
-[![Build Status](https://magnum.travis-ci.com/StackStorm/st2-auth-backend-pam.svg?branch=master)](https://magnum.travis-ci.com/StackStorm/st2-auth-backend-pam) [![IRC](https://img.shields.io/irc/%23stackstorm.png)](http://webchat.freenode.net/?channels=stackstorm)
+[![Build Status](https://travis-ci.com/StackStorm/st2-auth-backend-pam.svg?branch=master)](https://travis-ci.com/StackStorm/st2-auth-backend-pam) [![IRC](https://img.shields.io/irc/%23stackstorm.png)](http://webchat.freenode.net/?channels=stackstorm)
 
 ### Requirements
 
