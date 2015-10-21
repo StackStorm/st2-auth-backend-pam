@@ -11,10 +11,9 @@ sudo apt-get -y install libpam0g
 
 ### Configuration Example
 
-Please refer to the [standalone mode](http://docs.stackstorm.com/config/authentication.html#setup-
-standalone-mode) in the configuration section for authentication for basic setup concept. The
-following is an example of the auth section in the StackStorm configuration file for the PAM
-backend.
+Please refer to the authentication section in the StackStorm 
+[documentation](http://docs.stackstorm.com) for basic setup concept. The following is an
+example of the auth section in the StackStorm configuration file for the PAM backend.
 
 ```
 [auth]
