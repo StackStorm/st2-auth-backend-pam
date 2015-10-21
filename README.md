@@ -21,7 +21,10 @@ backend.
 mode = standalone
 backend = pam
 enable = True
-debug = False
+use_ssl = True
+cert = /path/to/ssl/cert/file
+key = /path/to/ssl/key/file
 logging = /path/to/st2auth.logging.conf
-api_url = http://myhost.example.com:9101/
+api_url = https://myhost.examples.com:9101
+debug = False
 ```
