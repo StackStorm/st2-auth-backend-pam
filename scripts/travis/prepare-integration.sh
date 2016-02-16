@@ -21,6 +21,7 @@ create_user() {
 }
 
 # mkpasswd requires whois package
+apt-get update
 apt-get install -y whois
 
 create_user
