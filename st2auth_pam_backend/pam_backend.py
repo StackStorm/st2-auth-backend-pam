@@ -15,6 +15,7 @@
 
 from __future__ import absolute_import
 
+import os
 import logging
 
 __all__ = [
@@ -24,6 +25,11 @@ __all__ = [
 from st2auth_pam_backend.pam_ffi import auth as pam_auth
 
 LOG = logging.getLogger(__name__)
+
+PAM_DOCS_LINK = 'https://docs.stackstorm.com/install/deb.html#configure-authentication'
+NON_ROTT_ERROR_MSG = ('When using pam backend, st2auth process needs to run as "root" so it can '
+                      'read /etc/shadow file. For more details please see %s' %
+                      (PAM_DOCS_LINK))
 
 
 class PAMAuthenticationBackend(object):
@@ -38,7 +44,9 @@ class PAMAuthenticationBackend(object):
     """
 
     def __init__(self):
-        pass
+        uid = os.geteuid()
+        if uid != 0:
+            raise ValueError(NON_ROTT_ERROR_MSG)
 
     def authenticate(self, username, password):
         try:

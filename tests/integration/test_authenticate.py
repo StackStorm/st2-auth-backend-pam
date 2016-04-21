@@ -13,20 +13,35 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import mock
 import unittest2
 
 from st2auth_pam_backend import pam_backend
 
 
 class PAMBackendAuthenticationTest(unittest2.TestCase):
+    @mock.patch('os.geteuid')
+    def test_non_root_user(self, mock_get_euid):
+        # non root
+        mock_get_euid.return_value = 100
+
+        expected_msg = 'st2auth process needs to run as "root"'
+        self.assertRaisesRegexp(ValueError, expected_msg,
+                                pam_backend.PAMAuthenticationBackend)
+
+        # root
+        mock_get_euid.return_value = 0
+        pam_backend.PAMAuthenticationBackend()
 
     # See scrips/travis/prepare-integration.sh for right username + password.
+    @mock.patch('os.geteuid', mock.Mock(return_value=0))
     def test_good_password(self):
         pam = pam_backend.PAMAuthenticationBackend()
         self.assertEqual(pam.authenticate('pammer', 'spammer'), True,
                          'Valid credentials should return True.')
 
     # See scrips/travis/prepare-integration.sh for right username + password.
+    @mock.patch('os.geteuid', mock.Mock(return_value=0))
     def test_bad_password(self):
         pam = pam_backend.PAMAuthenticationBackend()
         self.assertEqual(pam.authenticate('pammer', 'oumpalumpa'), False,
