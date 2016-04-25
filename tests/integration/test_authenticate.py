@@ -29,6 +29,10 @@ class PAMBackendAuthenticationTest(unittest2.TestCase):
         self.assertRaisesRegexp(ValueError, expected_msg,
                                 pam_backend.PAMAuthenticationBackend)
 
+        # non root, but check for root is disabled
+        mock_get_euid.return_value = 100
+        pam_backend.PAMAuthenticationBackend(check_for_root=False)
+
         # root
         mock_get_euid.return_value = 0
         pam_backend.PAMAuthenticationBackend()
