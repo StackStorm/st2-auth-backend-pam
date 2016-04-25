@@ -15,6 +15,7 @@
 
 from __future__ import absolute_import
 
+import os
 import logging
 
 __all__ = [
@@ -24,6 +25,11 @@ __all__ = [
 from st2auth_pam_backend.pam_ffi import auth as pam_auth
 
 LOG = logging.getLogger(__name__)
+
+PAM_DOCS_LINK = 'https://docs.stackstorm.com/install/deb.html#configure-authentication'
+NON_ROOT_ERROR_MSG = ('When using pam backend, st2auth process needs to run as "root" so it can '
+                      'read /etc/shadow file. For more details, please see %s' %
+                      (PAM_DOCS_LINK))
 
 
 class PAMAuthenticationBackend(object):
@@ -37,8 +43,13 @@ class PAMAuthenticationBackend(object):
     pam_ffi is implemented using ctypes, so no compilation is necessary.
     """
 
-    def __init__(self):
-        pass
+    def __init__(self, check_for_root=True):
+        """
+        :param check_for_root: True to check that the current process is running as root (uid 0).
+        :type check_for_root: ``bool``
+        """
+        if check_for_root:
+            self._verify_running_as_root()
 
     def authenticate(self, username, password):
         try:
@@ -51,3 +62,9 @@ class PAMAuthenticationBackend(object):
         except:
             LOG.exception('Unable to PAM authenticate user "%s".', username)
             raise
+
+    def _verify_running_as_root(self):
+        uid = os.geteuid()
+
+        if uid != 0:
+            raise ValueError(NON_ROOT_ERROR_MSG)
