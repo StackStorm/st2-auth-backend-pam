@@ -43,17 +43,20 @@ class PAMAuthenticationBackend(object):
     pam_ffi is implemented using ctypes, so no compilation is necessary.
     """
 
-    def __init__(self, check_for_root=True):
+    def __init__(self, check_for_root=True, service='login'):
         """
         :param check_for_root: True to check that the current process is running as root (uid 0).
         :type check_for_root: ``bool``
+        :param service: PAM service to authenticate against
+        :type service: ``string``
         """
         if check_for_root:
             self._verify_running_as_root()
+        self.pam_service = service
 
     def authenticate(self, username, password):
         try:
-            ret = pam_auth(username, password)
+            ret = pam_auth(username, password, service=self.pam_service)
             if ret:
                 LOG.info('Successfully authenticated user "%s".', username)
             else:
