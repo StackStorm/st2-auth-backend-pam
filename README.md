@@ -23,7 +23,7 @@ enable = True
 use_ssl = True
 cert = /path/to/ssl/cert/file
 key = /path/to/ssl/key/file
-logging = /path/to/st2auth.logging.conf
+logging = /etc/st2/logging.auth.conf
 api_url = https://myhost.examples.com:9101
 debug = False
 ```
