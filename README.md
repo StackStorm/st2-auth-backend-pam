@@ -8,6 +8,19 @@ Ubuntu:
 ```
 sudo apt-get -y install libpam0g
 ```
+RHEL/CentOS:
+```
+sudo yum -y install pam-devel
+```
+
+### Installation
+
+Install this into the ST2 virtualenv with:
+```
+sudo /opt/stackstorm/st2/bin/pip install git+https://github.com/StackStorm/st2-auth-backend-pam.git@master#egg=st2_auth_backend_pam
+```
+
+Edit the file: `/lib/systemd/system/st2auth.service`. Modify it so that the `stauth` service runs as root.
 
 ### Configuration Example
 
@@ -23,7 +36,7 @@ enable = True
 use_ssl = True
 cert = /path/to/ssl/cert/file
 key = /path/to/ssl/key/file
-logging = /path/to/st2auth.logging.conf
+logging = /etc/st2/logging.auth.conf
 api_url = https://myhost.examples.com:9101
 debug = False
 ```
