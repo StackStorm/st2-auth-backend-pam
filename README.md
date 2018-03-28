@@ -41,6 +41,12 @@ api_url = https://myhost.examples.com:9101
 debug = False
 ```
 
+### Limitations
+
+The python implementation of PAM does not allow authentication as the `root` user.
+When utilizing this backend, you will need to authenticate as a non-`root` user.
+
+
 ## Copyright, License, and Contributors Agreement
 
 Copyright 2015 StackStorm, Inc.
