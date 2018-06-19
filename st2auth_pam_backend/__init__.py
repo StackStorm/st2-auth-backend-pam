@@ -13,7 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from pam_backend import PAMAuthenticationBackend
+from __future__ import absolute_import
+
+from .pam_backend import PAMAuthenticationBackend
 
 __all__ = [
     'PAMAuthenticationBackend'
