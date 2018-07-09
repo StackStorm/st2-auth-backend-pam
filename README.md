@@ -2,13 +2,19 @@
 
 [![Build Status](https://travis-ci.org/StackStorm/st2-auth-backend-pam.svg?branch=master)](https://travis-ci.org/StackStorm/st2-auth-backend-pam) [![IRC](https://img.shields.io/irc/%23stackstorm.png)](http://webchat.freenode.net/?channels=stackstorm)
 
+PAM authentication backend allows users to authenticate against the PAM (Pluggable Authentication
+Modules) on the system where ``st2auth`` service is running.
+
 ### Requirements
 
 Ubuntu:
-```
+
+```bash
 sudo apt-get -y install libpam0g
 ```
+
 RHEL/CentOS:
+
 ```
 sudo yum -y install pam-devel
 ```
@@ -16,11 +22,18 @@ sudo yum -y install pam-devel
 ### Installation
 
 Install this into the ST2 virtualenv with:
-```
+
+```bash
 sudo /opt/stackstorm/st2/bin/pip install git+https://github.com/StackStorm/st2-auth-backend-pam.git@master#egg=st2_auth_backend_pam
 ```
 
 Edit the file: `/lib/systemd/system/st2auth.service`. Modify it so that the `stauth` service runs as root.
+
+### Configuration Options
+
+| option    | required | default | description                                                |
+|-----------|----------|---------|------------------------------------------------------------|
+| service   | no       | login   | PAM service to authenticate against                        |
 
 ### Configuration Example
 
@@ -32,13 +45,8 @@ example of the auth section in the StackStorm configuration file for the PAM bac
 [auth]
 mode = standalone
 backend = pam
-enable = True
-use_ssl = True
-cert = /path/to/ssl/cert/file
-key = /path/to/ssl/key/file
-logging = /etc/st2/logging.auth.conf
-api_url = https://myhost.examples.com:9101
-debug = False
+backend_kwargs = {"service": "login"}
+...
 ```
 
 ### Limitations
