@@ -41,7 +41,7 @@ Please refer to the authentication section in the StackStorm
 [documentation](http://docs.stackstorm.com) for basic setup concept. The following is an
 example of the auth section in the StackStorm configuration file for the PAM backend.
 
-```
+```ini
 [auth]
 mode = standalone
 backend = pam
