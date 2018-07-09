@@ -171,8 +171,8 @@ def authenticate(username, password, service='login'):
     return retval == 0
 
 
-def auth(username, password, **kwargs):
+def auth(username, password, service='login'):
     '''
     Authenticate via pam
     '''
-    return authenticate(username, password, kwargs.get('service', 'login'))
+    return authenticate(username=username, password=password, service=service)
