@@ -66,7 +66,7 @@ class PAMAuthenticationBackend(object):
                 LOG.info('Invalid username/password for user "%s".', username)
 
             return ret
-        except:
+        except Exception:
             LOG.exception('Unable to PAM authenticate user "%s".', username)
             raise
 
