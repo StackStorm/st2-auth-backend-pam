@@ -9,7 +9,8 @@ fi
 if [ ${TASK} == 'checks' ]; then
   tox -e lint
 elif [ ${TASK} == 'integration' ]; then
-  sudo tox -e py27  # If we need more python versions, add them here.
+  # If we need more python versions, add them here.
+  sudo bash -c "source /home/travis/virtualenv/python3.6/bin/activate && tox -e py27,py36"
 else
   echo "Invalid task: ${TASK}"
   exit 2
