@@ -20,7 +20,7 @@ Implemented using ctypes, so no compilation is necessary.
 
 # Import Python Libs
 from __future__ import absolute_import
-from ctypes import CDLL, POINTER, Structure, CFUNCTYPE, cast, pointer, sizeof, byref
+from ctypes import CDLL, POINTER, Structure, CFUNCTYPE, cast, sizeof, byref
 from ctypes import c_void_p, c_uint, c_char_p, c_char, c_int
 from ctypes import memmove
 from ctypes.util import find_library
@@ -153,7 +153,7 @@ def authenticate(username, password, service='login'):
         p_response[0] = response
         for i in range(n_messages):
             if messages[i].contents.msg_style == PAM_PROMPT_ECHO_OFF:
-                dst = CALLOC(len(password)+1, sizeof(c_char))
+                dst = CALLOC(len(password) + 1, sizeof(c_char))
                 memmove(dst, cpassword, len(password))
                 response[i].resp = dst
                 response[i].resp_retcode = 0
