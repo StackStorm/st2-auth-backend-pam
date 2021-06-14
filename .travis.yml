@@ -1,6 +1,7 @@
 language: python
 python:
   - 3.6
+  - 3.8
 
 # Used old infrastructure, needed for integration tests:
 # http://docs.travis-ci.com/user/workers/standard-infrastructure/
