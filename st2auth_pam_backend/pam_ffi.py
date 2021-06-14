@@ -20,8 +20,9 @@ Implemented using ctypes, so no compilation is necessary.
 
 # Import Python Libs
 from __future__ import absolute_import
-from ctypes import CDLL, POINTER, Structure, CFUNCTYPE, cast, pointer, sizeof
+from ctypes import CDLL, POINTER, Structure, CFUNCTYPE, cast, sizeof, byref
 from ctypes import c_void_p, c_uint, c_char_p, c_char, c_int
+from ctypes import memmove
 from ctypes.util import find_library
 
 from six.moves import range  # pylint: disable=import-error,redefined-builtin
@@ -148,17 +149,23 @@ def authenticate(username, password, service='login'):
         '''
         # Create an array of n_messages response objects
         addr = CALLOC(n_messages, sizeof(PamResponse))
-        p_response[0] = cast(addr, POINTER(PamResponse))
+        response = cast(addr, POINTER(PamResponse))
+        p_response[0] = response
         for i in range(n_messages):
             if messages[i].contents.msg_style == PAM_PROMPT_ECHO_OFF:
-                pw_copy = STRDUP(str(password))
-                p_response.contents[i].resp = cast(pw_copy, c_char_p)
-                p_response.contents[i].resp_retcode = 0
+                dst = CALLOC(len(password) + 1, sizeof(c_char))
+                memmove(dst, cpassword, len(password))
+                response[i].resp = dst
+                response[i].resp_retcode = 0
         return 0
 
+    username = username.encode('UTF-8')
+    password = password.encode('UTF-8')
+    service = service.encode('UTF-8')
+    cpassword = c_char_p(password)
     handle = PamHandle()
     conv = PamConv(my_conv, 0)
-    retval = PAM_START(service, username, pointer(conv), pointer(handle))
+    retval = PAM_START(service, username, byref(conv), byref(handle))
 
     if retval != 0:
         # TODO: This is not an authentication error, something
