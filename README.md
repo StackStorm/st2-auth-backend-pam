@@ -1,6 +1,4 @@
-# PAM authentication plugin for StackStorm Community and Enterprise edition
-
-[![Build Status](https://travis-ci.org/StackStorm/st2-auth-backend-pam.svg?branch=master)](https://travis-ci.org/StackStorm/st2-auth-backend-pam) [![IRC](https://img.shields.io/irc/%23stackstorm.png)](http://webchat.freenode.net/?channels=stackstorm)
+# PAM authentication plugin for StackStorm
 
 PAM authentication backend allows users to authenticate against the PAM (Pluggable Authentication
 Modules) on the system where ``st2auth`` service is running.
