@@ -14,12 +14,12 @@
 # limitations under the License.
 
 import mock
-import unittest2
+import unittest
 
 from st2auth_pam_backend import pam_backend
 
 
-class PAMBackendAuthenticationTest(unittest2.TestCase):
+class PAMBackendAuthenticationTest(unittest.TestCase):
     @mock.patch('os.geteuid')
     def test_non_root_user(self, mock_get_euid):
         # non root
