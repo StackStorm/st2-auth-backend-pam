@@ -27,10 +27,15 @@ INIT_FILE = os.path.join(BASE_DIR, 'st2auth_pam_backend', '__init__.py')
 version = parse_version_string(INIT_FILE)
 install_reqs, dep_links = fetch_requirements(REQUIREMENTS_FILE)
 
+with open("README.md", "r") as fh:
+    long_description = fh.read()
+
 setup(
     name='st2-auth-backend-pam',
     version=version,
     description='PAM authentication plugin for StackStorm.',
+    long_description=long_description,
+    long_description_content_type="text/markdown",
     author='StackStorm, Inc.',
     author_email='info@stackstorm.com',
     url='https://github.com/StackStorm/st2-auth-backend-pam',
