@@ -41,12 +41,10 @@ class PAMBackendAuthenticationTest(unittest.TestCase):
     @mock.patch('os.geteuid', mock.Mock(return_value=0))
     def test_good_password(self):
         pam = pam_backend.PAMAuthenticationBackend()
-        self.assertEqual(pam.authenticate('pammer', 'spammer'), True,
-                         'Valid credentials should return True.')
+        assert pam.authenticate('pammer', 'spammer'), 'Valid credentials should return True.'
 
     # See scrips/prepare-integration.sh for right username + password.
     @mock.patch('os.geteuid', mock.Mock(return_value=0))
     def test_bad_password(self):
         pam = pam_backend.PAMAuthenticationBackend()
-        self.assertEqual(pam.authenticate('pammer', 'oumpalumpa'), False,
-                         'Invalid credentials should return False.')
+        assert not pam.authenticate('pammer', 'oumpalumpa'), 'Invalid credentials should return False.'
