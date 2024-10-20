@@ -25,8 +25,6 @@ from ctypes import c_void_p, c_uint, c_char_p, c_char, c_int
 from ctypes import memmove
 from ctypes.util import find_library
 
-from six.moves import range  # pylint: disable=import-error,redefined-builtin
-
 LIBPAM = CDLL(find_library('pam'))
 LIBC = CDLL(find_library('c'))
 

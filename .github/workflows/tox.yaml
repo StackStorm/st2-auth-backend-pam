@@ -1,0 +1,82 @@
+name: Tox CI
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v4
+
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.8"
+
+    - name: Install tox
+      run: pip install --user tox
+
+    - name: Lint
+      run: tox -e lint
+
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.9", "3.10", "3.11"]
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v4
+
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install tox
+      run: pip install --user tox
+
+    - name: Select tox env
+      id: tox-env
+      run: echo tox-env=py${{ matrix.python-version }} | tr -d '.' >> ${GITHUB_OUTPUT}
+
+    - name: Prepare Integration 
+      run: sudo -E ./scripts/prepare-integration.sh
+
+    - name: Test
+      run: sudo -E -- $(which tox) -e ${{ steps.tox-env.outputs.tox-env }}
+
+  set_merge_ok:
+    name: Set Merge OK
+    if: always() && !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled')
+    needs:
+    - lint
+    - test
+    outputs:
+      merge_ok: ${{ steps.set_merge_ok.outputs.merge_ok }}
+    runs-on: ubuntu-latest
+    steps:
+    - id: set_merge_ok
+      run: echo 'merge_ok=true' >> ${GITHUB_OUTPUT}
+
+  merge_ok:
+    name: Merge OK
+    if: always()
+    needs:
+    - set_merge_ok
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        merge_ok="${{ needs.set_merge_ok.outputs.merge_ok }}"
+        if [[ "${merge_ok}" == "true" ]]; then
+          echo "Merge OK"
+          exit 0
+        else
+          echo "Merge NOT OK"
+          exit 1
+        fi

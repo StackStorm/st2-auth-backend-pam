@@ -21,7 +21,8 @@ create_user() {
 }
 
 # mkpasswd requires whois package
-apt-get update
-apt-get install -y whois
+apt-get install -y whois pamtester
 
 create_user
+
+echo ${TESTPASSWD} | pamtester -v login ${TESTUSER} authenticate
