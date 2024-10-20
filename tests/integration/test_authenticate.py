@@ -37,14 +37,14 @@ class PAMBackendAuthenticationTest(unittest.TestCase):
         mock_get_euid.return_value = 0
         pam_backend.PAMAuthenticationBackend()
 
-    # See scrips/travis/prepare-integration.sh for right username + password.
+    # See scrips/prepare-integration.sh for right username + password.
     @mock.patch('os.geteuid', mock.Mock(return_value=0))
     def test_good_password(self):
         pam = pam_backend.PAMAuthenticationBackend()
         self.assertEqual(pam.authenticate('pammer', 'spammer'), True,
                          'Valid credentials should return True.')
 
-    # See scrips/travis/prepare-integration.sh for right username + password.
+    # See scrips/prepare-integration.sh for right username + password.
     @mock.patch('os.geteuid', mock.Mock(return_value=0))
     def test_bad_password(self):
         pam = pam_backend.PAMAuthenticationBackend()
