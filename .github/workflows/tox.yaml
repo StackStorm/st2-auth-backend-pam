@@ -39,7 +39,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
 
     - name: Install tox
-      run: sudo -E -- pip install --user tox
+      run: pip install --user tox
 
     - name: Select tox env
       id: tox-env
@@ -49,7 +49,7 @@ jobs:
       run: sudo -E ./scripts/prepare-integration.sh
 
     - name: Test
-      run: sudo -E -- tox -e ${{ steps.tox-env.outputs.tox-env }}
+      run: sudo -E -- $(which tox) -e ${{ steps.tox-env.outputs.tox-env }}
 
   set_merge_ok:
     name: Set Merge OK
