@@ -26,7 +26,7 @@ class PAMBackendAuthenticationTest(unittest.TestCase):
         mock_get_euid.return_value = 100
 
         expected_msg = 'st2auth process needs to run as "root"'
-        self.assertRaisesRegexp(ValueError, expected_msg,
+        self.assertRaisesRegex(ValueError, expected_msg,
                                 pam_backend.PAMAuthenticationBackend)
 
         # non root, but check for root is disabled
